@@ -1,0 +1,10 @@
+LOG_LEVEL=debug
+GO111MODULE?=on
+CGO_ENABLED?=0
+PROJECT_NAME?=muzna
+GCP_PROJECT_ID?=strange-metrics-258802
+DOCKER_REGISTRY_URI?=eu.gcr.io/${GCP_PROJECT_ID}
+IMAGE_NODEJS?=${DOCKER_REGISTRY_URI}/images/nodejs:node-10.15.3-alpine-NG-1
+IMAGE_GOLANG?=${DOCKER_REGISTRY_URI}/images/golang-ci:golang-1.13.4-alpine3.10-NG-1
+IMAGE_PYTHON?=${DOCKER_REGISTRY_URI}/images/python:python-3.8.0-alpine3.10-NG-1
+SERVICE_HOSTNAME?=$(shell v=$$( find **/${TARGET_NAME} -name Buildfile -exec yq r {} metadata.name \;); echo $$v)

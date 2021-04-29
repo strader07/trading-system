@@ -1,0 +1,22 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
+  name: ingresser
+  namespace: tools
+spec:
+  rules:
+    - host: nexus.tools.muwazana.com
+      http:
+        paths:
+          - backend:
+              serviceName: nexus-exposed
+              servicePort: http
+          - backend:
+              serviceName: nexus-repo
+              servicePort: http
+            path: /repository/*

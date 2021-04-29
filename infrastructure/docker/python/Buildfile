@@ -1,0 +1,8 @@
+apiVersion: v1beta1
+kind: Docker
+metadata:
+  name: python
+  registry: eu.gcr.io/strange-metrics-258802
+spec:
+  base: python:3.8.0-alpine3.10
+  version: "1"

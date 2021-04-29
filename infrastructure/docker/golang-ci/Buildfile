@@ -1,0 +1,8 @@
+apiVersion: v1beta1
+kind: Docker
+metadata:
+  name: golang-ci
+  registry: eu.gcr.io/strange-metrics-258802
+spec:
+  base: golang:1.13.4-alpine3.10
+  version: "1"

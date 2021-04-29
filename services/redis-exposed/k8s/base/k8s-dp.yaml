@@ -1,0 +1,45 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis-exposed
+  labels:
+    app: redis-exposed
+spec:
+  selector:
+    matchLabels:
+      app: redis-exposed
+  template:
+    metadata:
+      labels:
+        app: redis-exposed
+    spec:
+      containers:
+      - name: redis-exposed
+        envFrom:
+        - configMapRef:
+            name: redis-exposed
+            optional: true
+        - secretRef:
+            name: redis-exposed
+            optional: true
+        image: eu.gcr.io/strange-metrics-258802/images/redis:redis-5.0.7-alpine-NG-1
+        imagePullPolicy: Always
+        ports:
+        - name: tcp-redis
+          containerPort: 6379
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: redis-exposed
+spec:
+  maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: redis-exposed

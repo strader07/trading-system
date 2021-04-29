@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: exit-handlers-
+  namespace: argo
+spec:
+  entrypoint: intentional-fail
+  onExit: exit-handler
+  templates:
+    - name: intentional-fail
+      container:
+        image: alpine:latest
+        command: [sh, -c]
+        args: ["echo intentional failure; exit 1"]
+
+    - name: exit-handler
+      steps:
+        - - name: failed
+            template: failed
+            when: "{{workflow.status}} != Succeeded"
+    - name: failed
+      container:
+        image: joshdvir/telegram-send-message
+        env:
+          - name: BOT_TOKEN
+            value: "845629642:AAH83c0oyPH8MT5QuuuoP-KtqbVdb4mufoE"
+          - name: CHAT_ID
+            value: "-1001431223078"
+          - name: MESSAGE
+            value: "Argo Workflow [{{workflow.name}}](https://argo.muwazana.com/workflows/argo/{{workflow.name}}) has {{workflow.status}}."

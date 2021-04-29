@@ -1,0 +1,8 @@
+---
+apiVersion: v1beta1
+kind: Service
+metadata:
+  name: alerts
+  builder: python
+  tier: backend
+  version: v0.1.0

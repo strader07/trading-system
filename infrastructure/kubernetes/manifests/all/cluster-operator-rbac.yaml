@@ -1,0 +1,45 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-operator
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods/portforward
+      - pods/proxy
+      - services/proxy
+    verbs:
+      - create
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - services
+      - services/proxy
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cluster-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-operator
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: eslamsamir232@gmail.com
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: kamalmango7@gmail.com
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: butera.paul@gmail.com

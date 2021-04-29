@@ -1,0 +1,2 @@
+2020-01-08 19:10:16.436684,orderid,price,size,fillqty,action,state,side,leavesqty,sym,ordtype,tif,execinst,rejreason,
+2020-01-05 04:26:29.213052,875,451,5.65787,0,0,reject,Reject,5.65787,ALTH20,Limit,GoodTillCancel,AddLiquidityOnly,BrokerOption,

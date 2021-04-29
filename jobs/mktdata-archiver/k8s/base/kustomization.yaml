@@ -1,0 +1,4 @@
+resources:
+- k8s-cm.yaml
+- k8s-cj.yaml
+- k8s-ssec.yaml

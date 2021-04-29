@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "ftx-dropcopy"
+version = "1.0"
+description = "FTX Dropcopy service"
+authors = ["Muwazana S.A. <exchanges@muwazana.com>"]
+
+[[tool.poetry.source]]
+name = "mwz"
+url = "https://nexus.tools.muwazana.com/repository/muwazana-pypi/simple"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+mwzpyutil = "^1.5.4"
+ftx-client = "^1.7.0"
+
+[tool.poetry.dev-dependencies]
+black = { version = "*", allow-prereleases = true }
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

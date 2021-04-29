@@ -1,0 +1,8 @@
+---
+apiVersion: v1beta1
+kind: Service
+metadata:
+  name: python-service
+  builder: python
+  tier: backend
+  version: v1

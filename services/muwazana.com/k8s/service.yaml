@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: muwazana-com
+spec:
+  selector:
+    app: muwazana-com
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP

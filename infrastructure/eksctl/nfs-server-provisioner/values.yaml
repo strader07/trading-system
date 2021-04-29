@@ -1,0 +1,23 @@
+replicaCount: 1
+
+persistence:
+  enabled: true
+  storageClass: "gp2"
+  accessMode: ReadWriteOnce
+  size: 20Gi
+
+storageClass:
+  create: true
+  defaultClass: false
+  name: trader-nfs
+
+rbac:
+  create: true
+
+resources:
+  limits:
+    cpu: 400m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi

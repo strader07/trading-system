@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-websocket
+  labels:
+    app: demo-websocket
+data:
+  LOG_LEVEL: "debug"

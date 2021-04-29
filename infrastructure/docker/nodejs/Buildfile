@@ -1,0 +1,8 @@
+apiVersion: v1beta1
+kind: Docker
+metadata:
+  name: nodejs
+  registry: eu.gcr.io/strange-metrics-258802
+spec:
+  base: node:10.15.3-alpine
+  version: "1"

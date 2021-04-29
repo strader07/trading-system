@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: drone-vault
+  namespace: drone
+spec:
+  selector:
+    app: drone-vault
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP

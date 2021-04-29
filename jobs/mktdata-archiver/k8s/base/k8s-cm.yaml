@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mktdata-archiver
+  labels:
+    app: mktdata-archiver
+data:
+  LOG_LEVEL: "INFO"
+  REDIS_NODE_ADDR: "redis"
+  REDIS_NODE_TCP_PORT: "6379"
+  COREPACK_FAMILIES: ""
+  EXCHANGES: "ftx,gateio"
+  MARKETS_FILTER: "all"
+  ARCHIVE_DATES: "yesterday"

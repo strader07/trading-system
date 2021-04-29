@@ -1,0 +1,6 @@
+resources:
+- ray-namespace.yaml
+- ray-svc.yaml
+- ray-head-dp.yaml
+- ray-worker-dp.yaml
+- dashboard-ingress.yaml

@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "alerts"
+version = "1.0"
+description = "Alerts service"
+authors = ["Muwazana S.A. <exchanges@muwazana.com>"]
+
+[[tool.poetry.source]]
+name = "mwz"
+url = "https://nexus.tools.muwazana.com/repository/muwazana-pypi/simple"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+mwzpyutil = "^1.5.0"
+aiohttp = "^3.6.2"
+tabulate = "*"
+
+[tool.poetry.dev-dependencies]
+black = { version = "*", allow-prereleases = true }
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

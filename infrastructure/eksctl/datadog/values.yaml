@@ -1,0 +1,30 @@
+## Default values for Datadog Agent
+## See Datadog helm documentation to learn more:
+## https://docs.datadoghq.com/agent/kubernetes/helm/
+
+targetSystem: "linux"
+
+datadog:
+  apiKey: cbdabde099ba9bf5553db151b9eee3cc
+  logLevel: INFO
+  kubeStateMetricsEnabled: true
+
+  logLevel: "off"
+  kubeStateMetricsEnabled: false
+
+  logs:
+    enabled: true
+    containerCollectAll: true
+    containerCollectUsingFiles: true
+
+  processAgent:
+    enabled: true
+    processCollection: true
+
+agents:
+  enabled: true
+  tolerations:
+    - key: "strategies"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"

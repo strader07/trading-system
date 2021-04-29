@@ -1,0 +1,39 @@
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "80"
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: traefik
+  hosts:
+    - host: drone.muwazana.com
+      paths:
+        - "/"
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 10m
+    memory: 32Mi
+
+persistentVolume:
+  enabled: true
+  accessModes:
+    - ReadWriteOnce
+  mountPath: /data
+  size: 8Gi
+
+env:
+  DRONE_SERVER_HOST: "drone.muwazana.com"
+  DRONE_SERVER_PROTO: https
+  DRONE_RPC_SECRET: 1cd5f0b9b846e1e0f2155a49d53eed0a
+  DRONE_DATABASE_SECRET: 7f24f2c24bc31bd41ef0ea920aa222a5
+  DRONE_GITHUB_CLIENT_ID: 609f63ba0d01992db002
+  DRONE_GITHUB_CLIENT_SECRET: cad9a59be95111e18648c8baabdc55395ac42e2f

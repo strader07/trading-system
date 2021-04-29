@@ -1,0 +1,8 @@
+---
+apiVersion: v1beta1
+kind: App
+metadata:
+  name: ftx-dashboard
+  builder: nodejs
+  tier: frontend
+  version: v0.0.1

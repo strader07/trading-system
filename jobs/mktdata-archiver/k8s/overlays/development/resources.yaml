@@ -1,0 +1,19 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: ${SERVICE_NAME}
+spec:
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: ${SERVICE_NAME}
+            resources:
+              limits:
+                cpu: 200m
+                memory: 256Mi
+              requests:
+                cpu: 100m
+                memory: 128Mi

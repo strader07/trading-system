@@ -1,0 +1,17 @@
+postgresqlDatabase: mlflow
+postgresqlPassword: 7ORUFz21bikY
+
+persistence:
+  enabled: true
+  accessModes:
+    - ReadWriteOnce
+  size: 20Gi
+  annotations: {}
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 10m
+  limits:
+    memory: 500Mi
+    cpu: 400m

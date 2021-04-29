@@ -1,0 +1,32 @@
+backendStore:
+  postgres:
+    username: postgres
+    password: 7ORUFz21bikY
+    host: mlflow-postgres-postgresql
+    port: 5432
+    database: mlflow
+
+defaultArtifactRoot: gs://muzna-mlflow/
+
+extraArgs:
+  workers: 2
+
+replicaCount: 1
+
+serviceAccount:
+  create: true
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  limits:
+    cpu: 300m
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+prometheus:
+  expose: false

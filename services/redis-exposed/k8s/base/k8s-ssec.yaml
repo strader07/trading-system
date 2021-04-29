@@ -1,0 +1,16 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: redis-exposed
+  namespace: development
+spec:
+  encryptedData:
+    REDIS_PASSWORD: AgCYULgI1kCEOBIV5BwwZRC6vOrjYeqOInP6N3IynEjyNWyKuM1u17JR566f1ZhJW4eg7O4XOvskJFmCvA7uKZACJ/8yNbpnEw/Q/W/UfKn1M0KwGcaeokFdWnhDL6cLVqQC2cCHkYK3d1V2CknWcXJZu8xlELViIRE8uq5r9IaUd76wbojC8Y6qdJScTXXVYCQQyJedjvj4xyhA81ZLVHV3Q8/2QIfrKMGYgOq/iOdW4K1hpoRXI0MzLLkBOzhyUq2S4h81LyF5+0ApaE/a/D09kCvQdHTpjGOD22vxd77WuefDCNpx9akI7vJKkznKg366nIFm5ZHca6OdU0ue2EJRUd2wK0JDyAuRKjnUc20VifaRX/pcnHMKZoD/v0SnjcOKp41h3qAmLDa6Dl9v0OV2m4iLLicO1A+mcbGF4iqnq9CWMhxGyfDx7dI/iVpGhJ/h59CMIfA6BTvUMhR7w+56AQfHgIAX7pakRwS73W3l7oYlzyyRHa7TQj5JA8eE6tEZWytoisHtMxqbeDBiv1iaVRij3d4EqUx33P7fFtl0cvDcwDok3M9QV0T8SMRHugVuX8ybrKpGd42e3zmBVEKw0kYkYsIoga3WBPcD6NoZycC2WYWl0J8JUKdNn5DkJYjd1SN6pXo8YdQ4Vkr0RdAbrCdFyzjhJHuBJ4Rm/53WoFuW6aX0yARIyWIPhOxq8VdUwlQTHfb/MBW0Kd0tHuPjj/l7UUma/8ovJZ3b8quKpazH5K82XAor
+  template:
+    metadata:
+      creationTimestamp: null
+      name: redis-exposed
+      namespace: development
+status: {}
+

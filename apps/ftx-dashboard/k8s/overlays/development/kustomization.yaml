@@ -1,0 +1,6 @@
+bases:
+- ../../base
+patches:
+- k8s-ssec.yaml
+- k8s-bc.yaml
+- k8s-dp.yaml

@@ -1,0 +1,78 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: trader
+  region: ap-northeast-1
+  version: "1.17"
+
+vpc:
+  id: "vpc-3d39d255"
+  cidr: "172.31.0.0/16"
+  subnets:
+    private:
+      ap-northeast-1d:
+        id: "subnet-c34736eb"
+        cidr: "172.31.32.0/20"
+      ap-northeast-1c:
+        id: "subnet-3f39d257"
+        cidr: "172.31.16.0/20"
+    public:
+      ap-northeast-1d:
+        id: "subnet-c34736eb"
+        cidr: "172.31.32.0/20"
+      ap-northeast-1c:
+        id: "subnet-3f39d257"
+        cidr: "172.31.16.0/20"
+  clusterEndpoints:
+    publicAccess: true
+    privateAccess: true
+
+nodeGroups:
+  - name: strategies-v1-17-v1
+    labels:
+      role: strategies
+    instanceType: c5n.2xlarge
+    desiredCapacity: 0
+    minSize: 0
+    maxSize: 10
+    availabilityZones:
+      - ap-northeast-1d
+    kubeletExtraConfig:
+      cpuManagerPolicy: static
+      featureGates:
+        CPUManager: true
+        DynamicKubeletConfig: true
+        RotateKubeletServerCertificate: true
+    iam:
+      instanceRoleName: eks-trader-strategies-NodeInstanceRole
+      withAddonPolicies:
+        autoScaler: true
+    tags:
+      k8s.io/cluster-autoscaler/node-template/label/role: strategies
+      k8s.io/cluster-autoscaler/node-template/taint/strategies: "true:NoSchedule"
+    ssh:
+      publicKeyName: "nayef-mbp-ap-northeast"
+    preBootstrapCommands:
+      - for cpunum in $(cat /sys/devices/system/cpu/cpu*/topology/thread_siblings_list | cut -s -d, -f2- | tr ',' '\n' | sort -un); do echo 0 > /sys/devices/system/cpu/cpu$cpunum/online; done
+      - yum install -y ethtool
+      - ethtool -G eth0 rx 4096 tx 4096
+      - echo "1" > /proc/sys/net/ipv4/tcp_low_latency
+      - ulimit -c unlimited
+      - echo '/mnt/logs/core-%e-%s-%u-%t' | sudo tee /proc/sys/kernel/core_pattern
+    taints:
+      strategies: "true:NoSchedule"
+
+  - name: common-v1-17-v1
+    labels:
+      role: workers
+    instanceType: t3.medium
+    desiredCapacity: 1
+    availabilityZones:
+      - ap-northeast-1d
+    ssh:
+      publicKeyName: "nayef-mbp-ap-northeast"
+    iam:
+      instanceRoleName: eks-trader-common-NodeInstanceRole
+      withAddonPolicies:
+        autoScaler: true

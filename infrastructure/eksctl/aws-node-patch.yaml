@@ -1,0 +1,8 @@
+spec:
+  template:
+    spec:
+      containers:
+        - name: aws-node
+          env:
+            - name: WARM_IP_TARGET
+              value: "1"

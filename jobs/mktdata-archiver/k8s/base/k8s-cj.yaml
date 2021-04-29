@@ -1,0 +1,42 @@
+---
+apiVersion: batch/v1beta1
+kind: Job
+metadata:
+  name: ${SERVICE_NAME}
+  labels:
+    app: ${SERVICE_NAME}
+spec:
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: ${SERVICE_NAME}
+            image: ${IMAGE_URI}:${IMAGE_TAG}
+            imagePullPolicy: Always
+            env:
+            - name: SERVICE_HOSTNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /etc/gcp/sa_credentials.json
+            envFrom:
+            - configMapRef:
+                name: ${SERVICE_NAME}
+                optional: true
+            - secretRef:
+                name: ${SERVICE_NAME}
+                optional: true
+            volumeMounts:
+              - name: service-account-credentials-volume
+                mountPath: /etc/gcp
+                readOnly: true
+          volumes:
+            - name: service-account-credentials-volume
+              secret:
+                secretName: mktdata-archiver-gcs
+                items:
+                - key: sa_json
+                  path: sa_credentials.json
+          restartPolicy: OnFailure

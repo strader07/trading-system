@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  namespace: kube-system
+  name: sysctl
+spec:
+  selector:
+    matchLabels:
+      app: sysctl
+  template:
+    metadata:
+      labels:
+        app: sysctl
+    spec:
+      serviceAccountName: node-controller
+      volumes:
+      - name: sys
+        hostPath:
+          path: /sys
+      initContainers:
+      - name: disable-thp
+        image: busybox
+        command: ["sh", "-c"]
+        args:
+        - |-
+          set -e
+          set -o pipefail
+
+          echo never > /rootfs/sys/kernel/mm/transparent_hugepage/enabled
+          echo never > /rootfs/sys/kernel/mm/transparent_hugepage/defrag
+
+          grep -q -F [never] /sys/kernel/mm/transparent_hugepage/enabled
+          grep -q -F [never] /sys/kernel/mm/transparent_hugepage/defrag
+        volumeMounts:
+        - name: sys
+          mountPath: /rootfs/sys
+      - name: label-node
+        image: bitnami/kubectl:1.15.3
+        command: ["kubectl"]
+        args: ["label", "node", "--overwrite", "$(NODE_NAME)", "sysctl/mm.transparent_hugepage.enabled=never", "sysctl/mm.transparent_hugepage.defrag=never"]
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+      containers:
+      - name: sleep
+        image: wardsco/sleep
+        imagePullPolicy: IfNotPresent

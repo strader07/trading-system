@@ -1,0 +1,24 @@
+replicaCount: 2
+debug: true
+certificate:
+  useCertManager: false
+  generate: true
+
+service:
+  name: vault-secrets-webhook
+  type: ClusterIP
+  externalPort: 443
+  internalPort: 8443
+
+metrics:
+  enabled: true
+  port: 8443
+
+rbac:
+  enabled: true
+  psp:
+    enabled: false
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1

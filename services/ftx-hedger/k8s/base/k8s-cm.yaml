@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ftx-hedger
+  labels:
+    app: ftx-hedger
+data:
+  LOG_LEVEL: "INFO"
+  REDIS_NODE_ADDR: "redis"
+  REDIS_NODE_TCP_PORT: "6379"
+  EXP_REDIS_NODE_ADDR: "redis-exposed.ftx.dev.muwazana.com"
+  EXP_REDIS_NODE_TCP_PORT: "6379"
+  COREPACK_FAMILIES: "f.mrd.pilot"

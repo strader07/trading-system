@@ -1,0 +1,46 @@
+# Miscellaneous
+.base
+.subst
+*.retry
+*.pyc
+*~
+.base
+
+# VSCode
+.vscode/
+.history
+*.code-workspace
+
+.editorconfig
+
+# macOS
+.DS_Store
+
+# Idea
+.idea/
+
+# Terraform
+.terraform
+*.backup
+*.out
+*.tfstate
+
+# Golang
+bin
+go.sum
+
+# Kubernetes
+*_manifest.yaml
+
+# Python
+venv
+*.egg-info/
+requirements.txt
+dist/
+
+# Kuberentes secrets
+k8s-sec.yaml
+Makefile.dev.variables
+infrastructure/docker/*/.secrets/
+ftx-secret-deploy.sh
+.envrc

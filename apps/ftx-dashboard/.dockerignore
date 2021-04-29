@@ -1,0 +1,7 @@
+# Ignore everything
+**
+
+# Allow files and directories
+!build/**
+!package.json
+!server.js

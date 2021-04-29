@@ -1,0 +1,34 @@
+---
+# Ray head node service, allowing worker pods to discover the head node.
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: ray
+  name: ray-head
+spec:
+  ports:
+    # Redis ports.
+    - name: redis-primary
+      port: 6379
+      targetPort: 6379
+    - name: redis-shard-0
+      port: 6380
+      targetPort: 6380
+    - name: redis-shard-1
+      port: 6381
+      targetPort: 6381
+
+    # Ray internal communication ports.
+    - name: object-manager
+      port: 12345
+      targetPort: 12345
+    - name: node-manager
+      port: 12346
+      targetPort: 12346
+
+    # Ray Dashboard.
+    - name: ray-dashboard
+      port: 8265
+      targetPort: 8265
+  selector:
+    component: ray-head

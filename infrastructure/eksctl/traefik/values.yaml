@@ -1,0 +1,59 @@
+serviceType: LoadBalancer
+externalTrafficPolicy: Cluster
+replicas: 1
+
+debug:
+  enabled: true
+
+ssl:
+  enabled: true
+  enforced: true
+  permanentRedirect: true
+  upstream: false
+  insecureSkipVerify: false
+
+acme:
+  enabled: true
+  email: nayef.copty@muwazana.com
+  onHostRule: true
+  staging: false
+  logging: true
+  domains:
+    enabled: true
+    domainsList:
+      - main: "*.muwazana.com"
+      - sans:
+          - "muwazana.com"
+  challengeType: dns-01
+  delayBeforeCheck: 0
+  dnsProvider:
+    name: gcloud
+    gcloud:
+      GCE_PROJECT: strange-metrics-258802
+      GCE_SERVICE_ACCOUNT_FILE: /secrets/gcloud-credentials.json
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 1Gi
+
+dashboard:
+  enabled: true
+  domain: trader-traefik.muwazana.com
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: traefik
+      ingress.kubernetes.io/auth-type: forward
+      ingress.kubernetes.io/auth-url: https://auth.muwazana.com
+      ingress.kubernetes.io/auth-response-headers: X-Forwarded-User
+
+gzip:
+  enabled: true
+traefikLogFormat: json
+rbac:
+  enabled: true
+metrics:
+  prometheus:
+    enabled: true
+
+secretFiles:
+  gcloud-credentials.json: ""

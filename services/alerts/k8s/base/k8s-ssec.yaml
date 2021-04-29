@@ -1,0 +1,16 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: alerts
+  namespace: development
+spec:
+  encryptedData:
+    TELEGRAMKEY: AgBqszr4fCduSv7Lg039lwfALQf7iKIaOn1w02OPbdTuN6hdK/EdG6Uq+7sSTqdIeV4Z7cTNWZT3s9u91YUvyGnKlfxM+p3qS2/8BLUTY3tU+jijRAzBs9Z6pVcOZRm4q5DDCn+/JwCXcjereND3K+MiOwvp6Dhqd+YbCsuNPMRS/7X9afIQft1iLJcS6YfD1hh8wt50XXKCUBC1aBeR1xcQX0dEysW/1AXUCk2vsTmsjXqDzXBKLKewTxvZOp/mBnTQBcg5PQbvo0O4UHg+C2cos/DhD23eABEfpsCF0Kv6ZFNzZ1/wfAuumJv46uXjKRmsQAoAtkqY/rkqo6EoHZXMeG0B9q+U/q1y1tc5QU7Bfq0FeBGmb28MxVFBhbgEanL8spF1aSjcVcIObzX7Yx/u8u2gwYY4D4HKcAZxdv2ivNoBbgzc4RsmZ3Tm7aDSQH7ABf17lJARz3FHCwUCo0wiC3OrnOE4HrfnyfmDYlLKYGMRj91mdGgTur+z8AM+tBbSPa0fwXx84U0K865yZxB3/CzFuGUvuSYHAKjrlniHnjP7AQtTbZDPm4MDyUGFoiQWIbqaaEhU2sg2MAcHG3LiNn3Iv4W6FnhxYFZoenmNx3cARgX69MqjHQrg6SPYyiCsav5uPDXYGJlwSAbQnGtyPrV4xpdfPavhzMqgjvW/PhDvYI4tRZtj6smvQ8tYq2naIfULZa5wzMAdSzfQY7NBEYeaKKpqDayKBzUrNvgegZMOTSOBHT9Hjitnr/w=
+  template:
+    metadata:
+      creationTimestamp: null
+      name: alerts
+      namespace: development
+status: {}
+

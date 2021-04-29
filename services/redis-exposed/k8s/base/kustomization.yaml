@@ -1,0 +1,4 @@
+resources:
+- k8s-ssec.yaml
+- k8s-svc.yaml
+- k8s-dp.yaml

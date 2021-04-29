@@ -1,0 +1,104 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: mktdata-archiver
+  namespace: argo
+spec:
+  schedule: "15 0 * * *"
+  timezone: "UTC"
+  startingDeadlineSeconds: 0
+  concurrencyPolicy: "Replace"
+  failedJobsHistoryLimit: 4
+  suspend: false
+  workflowSpec:
+    entrypoint: invoke-workers
+    onExit: exit-handler
+    nodeSelector:
+      cloud.google.com/gke-nodepool: "argo-pool-v1"
+      cloud.google.com/gke-preemptible: "true"
+    tolerations:
+      - key: "argo"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+    volumes:
+      - name: service-account-credentials-volume
+        secret:
+          secretName: mktdata-archiver-gcs
+          items:
+            - key: sa_json
+              path: sa_credentials.json
+
+    templates:
+      - name: invoke-workers
+        steps:
+          - - name: run-mktdata-archiver
+              template: mktdata-archiver
+              arguments:
+                parameters:
+                  - name: worker_id
+                    value: "{{item}}"
+              withSequence:
+                count: "10"
+
+      - name: mktdata-archiver
+        retryStrategy:
+          limit: 2
+          backoff:
+            duration: "5m"
+        inputs:
+          parameters:
+            - name: worker_id
+        container:
+          image: eu.gcr.io/strange-metrics-258802/jobs/mktdata-archiver:v0.1.0-a25a3f7
+          resources:
+            requests:
+              cpu: 400m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 20Gi
+          env:
+            - name: SERVICE_HOSTNAME
+              value: "{.metadata.name}"
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /etc/gcp/sa_credentials.json
+            - name: LOG_LEVEL
+              value: INFO
+            - name: COREPACK_FAMILIES
+              value: ""
+            - name: EXCHANGES
+              value: "ftx,gateio"
+            - name: MARKETS_FILTER
+              value: "all"
+            - name: ARCHIVE_DATES
+              value: "yesterday"
+            - name: WORKERS_COUNT
+              value: "10"
+            - name: WORKER_ID
+              value: "{{inputs.parameters.worker_id}}"
+            - name: FTXKEY
+              value: ""
+            - name: FTXSECRET
+              value: ""
+          volumeMounts:
+            - name: service-account-credentials-volume
+              mountPath: /etc/gcp
+              readOnly: true
+
+      - name: exit-handler
+        steps:
+          - - name: failed
+              template: failed
+              when: "{{workflow.status}} != Succeeded"
+
+      - name: failed
+        container:
+          image: joshdvir/telegram-send-message
+          env:
+            - name: BOT_TOKEN
+              value: "845629642:AAH83c0oyPH8MT5QuuuoP-KtqbVdb4mufoE"
+            - name: CHAT_ID
+              value: "-1001431223078"
+            - name: MESSAGE
+              value: "Argo Workflow [{{workflow.name}}](https://argo.muwazana.com/workflows/argo/{{workflow.name}}) has {{workflow.status}}."

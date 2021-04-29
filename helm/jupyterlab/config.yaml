@@ -1,0 +1,102 @@
+proxy:
+  secretToken: "0961a025cf4fc4d48c059ea0e69ff57c0c8513a8b0eb07970a129a01d299b27a"
+  https:
+    enabled: false
+  service:
+    type: ClusterIP
+
+ingress:
+  enabled: true
+  hosts:
+    - notebook.muwazana.com
+  annotations:
+    kubernetes.io/ingress.class: traefik
+
+auth:
+  type: github
+  admin:
+    access: true
+    users:
+      - nrcopty@gmail.com
+    whitelist:
+      users:
+        - eslamsamir232@gmail.com
+        - mustafa.tawil@gmail.com
+        - butera.paul@gmail.com
+  github:
+    clientId: "73a99162cf12599c1320"
+    clientSecret: "8b27a6a4062371f5d733d4ad704d990a194cf5d0"
+    callbackUrl: "https://notebook.muwazana.com/hub/oauth_callback"
+
+hub:
+  extraConfig:
+    jupyterlab: |
+      c.Spawner.default_url = '/lab'
+      c.KubeSpawner.args = ['--allow-root']
+
+singleuser:
+  defaultUrl: "/lab"
+  image:
+    name: eu.gcr.io/strange-metrics-258802/lab
+    tag: 2.9
+  profileList:
+    - display_name: "Default Environment"
+      description: "To avoid too much bells and whistles: Python."
+      default: true
+    - display_name: "n1-standard-2 Environment"
+      description: "2 CPU, 7.GB RAM - n1-standard-2"
+      kubespawner_override:
+        cpu_guarantee: 2
+        mem_guarantee: 7.5G
+    - display_name: "n1-standard-4 Environment"
+      description: "3 CPU, 12GB RAM - n1-standard-4"
+      kubespawner_override:
+        cpu_guarantee: 3
+        mem_guarantee: 12G
+    - display_name: "n1-standard-16 Environment"
+      description: "14 CPU, 55GB RAM - n1-standard-16"
+      kubespawner_override:
+        cpu_guarantee: 14
+        mem_guarantee: 55G
+    - display_name: "n1-standard-32 Environment"
+      description: "30 CPU, 110GB RAM - n1-standard-32"
+      kubespawner_override:
+        cpu_guarantee: 30
+        mem_guarantee: 110G
+  extraTolerations:
+    - key: cloud.google.com/gke-preemptible
+      operator: Exists
+      effect: NoSchedule
+  extraEnv:
+    GRANT_SUDO: "yes"
+  initContainers:
+    - name: change-chown
+      image: eu.gcr.io/strange-metrics-258802/lab:2.9
+      command:
+        - chown
+        - "-R"
+        - jovyan:users
+        - /shared
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - name: nfs
+          mountPath: /shared
+      securityContext:
+        privileged: true
+        runAsUser: 0
+  storage:
+    dynamic:
+      storageClass: jupyterhub-user-ssd
+      capacity: 45Gi
+    extraVolumes:
+      - name: nfs
+        persistentVolumeClaim:
+          claimName: nfs
+          storageClass: ""
+    extraVolumeMounts:
+      - name: nfs
+        mountPath: /shared
+
+prePuller:
+  hook:
+    enabled: true

@@ -1,0 +1,4 @@
+apiVersion: cloud.google.com/v1beta1
+kind: BackendConfig
+metadata:
+  name: ${SERVICE_NAME}

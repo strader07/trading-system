@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: muwazana-com
+  name: muwazana-com
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: muwazana-com
+  template:
+    metadata:
+      labels:
+        app: muwazana-com
+    spec:
+      containers:
+        - name: muwazana-com
+          image: eu.gcr.io/strange-metrics-258802/muwazana:latest
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+            requests:
+              cpu: 10m
+              memory: 32Mi
+          livenessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 20
+            failureThreshold: 3
+            successThreshold: 1
+            periodSeconds: 10
+            timeoutSeconds: 2

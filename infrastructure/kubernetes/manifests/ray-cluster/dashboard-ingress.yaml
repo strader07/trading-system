@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ray-dashboard
+  namespace: ray
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    ingress.kubernetes.io/auth-type: forward
+    ingress.kubernetes.io/auth-url: http://traefik-forward-auth.kube-system.svc.cluster.local
+    ingress.kubernetes.io/auth-response-headers: X-Forwarded-User
+spec:
+  rules:
+    - host: ray.muwazana.com
+      http:
+        paths:
+          - backend:
+              serviceName: ray-head
+              servicePort: 8265

@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: websocket-service
+  labels:
+    app: websocket-service
+data:
+  LOG_LEVEL: "debug"
+  SERVICE_PORT: "4000"
+  REDIS_NODE_ADDR: "redis"
+  REDIS_NODE_TCP_PORT: "6379"

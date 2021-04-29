@@ -1,0 +1,39 @@
+replicaCount: 1
+terminationGracePeriodSeconds: 3600
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    ingress.kubernetes.io/auth-type: forward
+    ingress.kubernetes.io/auth-url: http://traefik-forward-auth.kube-system.svc.cluster.local
+    ingress.kubernetes.io/auth-response-headers: X-Forwarded-User
+    ingress.kubernetes.io/custom-request-headers: "Authorization: Basic cm9vdDpyb290"
+  hosts:
+    - host: drone-runner.muwazana.com
+      paths:
+        - "/"
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 10m
+    memory: 32Mi
+
+rbac:
+  buildNamespaces:
+    - drone
+
+env:
+  DRONE_RPC_SECRET: 1cd5f0b9b846e1e0f2155a49d53eed0a
+  DRONE_NAMESPACE_DEFAULT: drone
+  DRONE_UI_USERNAME: root
+  DRONE_UI_PASSWORD: root
+  DRONE_SECRET_PLUGIN_ENDPOINT: http://drone-vault.drone.svc.cluster.local
+  DRONE_SECRET_PLUGIN_SKIP_VERIFY: true
+  DRONE_SECRET_PLUGIN_TOKEN: b760e230d1c32b62a6db0fdf2a4c4a6d

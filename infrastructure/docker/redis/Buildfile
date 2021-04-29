@@ -1,0 +1,8 @@
+apiVersion: v1beta1
+kind: Docker
+metadata:
+  name: redis
+  registry: eu.gcr.io/strange-metrics-258802
+spec:
+  base: redis:5.0.7-alpine
+  version: "1"

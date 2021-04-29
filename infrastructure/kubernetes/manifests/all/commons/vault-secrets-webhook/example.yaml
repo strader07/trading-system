@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-secrets
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-secrets
+  template:
+    metadata:
+      labels:
+        app: hello-secrets
+      annotations:
+        vault.security.banzaicloud.io/vault-addr: "https://vault.muwazana.com"
+        vault.security.banzaicloud.io/vault-agent-configmap: trader-vault-agent
+    spec:
+      imagePullSecrets:
+        - name: dockerhub
+      containers:
+        - name: alpine
+          image: muwazana/feeds:vault
+          imagePullPolicy: Always
+          env:
+            - name: BOOK
+              value: BTCM20
+            - name: FTXKEY
+              value: "vault:exchanges/data/ftx#FTXKEY"
+            - name: FTXSECRET
+              value: "vault:exchanges/data/ftx#FTXSECRET"
+            - name: GOOGLE_APPLICATION_JSON
+              value: "vault:exchanges/data/ftx#GOOGLE_APPLICATION_JSON"
+            - name: VAULT_TOKEN_PATH
+              value: "/vault/.vault-token"

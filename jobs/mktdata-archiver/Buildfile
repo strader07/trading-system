@@ -1,0 +1,8 @@
+---
+apiVersion: v1beta1
+kind: CronJob
+metadata:
+  name: mktdata-archiver
+  builder: python
+  tier: backend
+  version: v0.1.0

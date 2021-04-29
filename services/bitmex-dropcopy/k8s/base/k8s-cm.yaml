@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bitmex-dropcopy
+  labels:
+    app: bitmex-dropcopy
+data:
+  LOG_LEVEL: "debug"
+  REDIS_NODE_ADDR: "redis"
+  REDIS_NODE_TCP_PORT: "6379"

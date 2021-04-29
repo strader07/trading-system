@@ -1,0 +1,5 @@
+k8s/raw_jobs/
+k8s/jobs.csv
+markets.csv
+ftx_markets_filter.csv
+*.parquet

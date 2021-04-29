@@ -1,0 +1,102 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: g.mm.pilot-jntusdt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: strategy
+  template:
+    metadata:
+      labels:
+        component: strategy
+      annotations:
+        vault.security.banzaicloud.io/vault-addr: "https://vault.muwazana.com"
+        vault.security.banzaicloud.io/vault-agent-configmap: trader-vault-agent
+    spec:
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: dockerhub
+      volumes:
+        - name: nfs
+          persistentVolumeClaim:
+            claimName: nfs
+        - name: dshm
+          emptyDir:
+            medium: Memory
+      nodeSelector:
+        role: strategies
+      tolerations:
+        - key: "strategies"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+
+      containers:
+        - name: feeds
+          image: muwazana/feeds:2.22
+          imagePullPolicy: Always
+          env:
+            - name: BINARY
+              value: gateio_feed
+            - name: BOOK
+              value: JNTUSDT
+            - name: GATEIOKEY
+              value: "vault:exchanges/data/gate#GATEIOKEY"
+            - name: GATEIOSECRET
+              value: "vault:exchanges/data/gate#GATEIOSECRET"
+            - name: REDISHOST
+              value: "vault:redis/data/exposed#REDISHOST"
+            - name: REDISPORT
+              value: "vault:redis/data/exposed#REDISPORT"
+            - name: REDISPW
+              value: "vault:redis/data/exposed#REDISPW"
+            - name: GOOGLE_APPLICATION_JSON
+              value: "vault:cloud/data/gcp#GOOGLE_APPLICATION_JSON"
+            - name: VAULT_TOKEN_PATH
+              value: "/vault/.vault-token"
+          volumeMounts:
+            - mountPath: /mnt/logs
+              name: nfs
+            - mountPath: /dev/shm
+              name: dshm
+          resources:
+            limits:
+              cpu: "1.1"
+              memory: 256Mi
+
+        - name: trader
+          image: muwazana/trader:2.22
+          imagePullPolicy: Always
+          env:
+            - name: BINARY
+              value: gateio_market_maker
+            - name: FAMILY
+              value: g.mm.pilot
+            - name: BOOK
+              value: JNTUSDT
+            - name: GATEIOKEY
+              value: "vault:exchanges/data/gate#GATEIOKEY"
+            - name: GATEIOSECRET
+              value: "vault:exchanges/data/gate#GATEIOSECRET"
+            - name: REDISHOST
+              value: "vault:redis/data/exposed#REDISHOST"
+            - name: REDISPORT
+              value: "vault:redis/data/exposed#REDISPORT"
+            - name: REDISPW
+              value: "vault:redis/data/exposed#REDISPW"
+            - name: GOOGLE_APPLICATION_JSON
+              value: "vault:cloud/data/gcp#GOOGLE_APPLICATION_JSON"
+            - name: VAULT_TOKEN_PATH
+              value: "/vault/.vault-token"
+          volumeMounts:
+            - mountPath: /mnt/logs
+              name: nfs
+            - mountPath: /dev/shm
+              name: dshm
+          resources:
+            limits:
+              cpu: "1.1"
+              memory: 256Mi
