@@ -1,0 +1,34 @@
+{
+  "name": "trading-system",
+  "version": "1.0.0",
+  "description": "1. brew cask install google-cloud-sdk (apt install google-cloud-sdk) 2. brew install kubernetes-cli (apt install kubernetes-cli) 3. gcloud container clusters get-credentials muzna-bo-aio-01 --zone europe-west2-c --project strange-metrics-258802 4. kubectl config rename-context gke_strange-metrics-258802_europe-west2-c_muzna-bo-aio-01 muzna-aio 5. kubectl --context muzna-aio --namespace development port-forward svc/redis 6379:6379 6. make run service <service-name> (i.e: `make run service python-service`)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rvision0925/trading-system.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rvision0925/trading-system/issues"
+  },
+  "homepage": "https://github.com/rvision0925/trading-system#readme",
+  "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
+    "clsx": "^1.1.1",
+    "express": "^4.17.1",
+    "lodash": "^4.17.21",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-interval": "^2.1.2",
+    "react-redux": "^7.2.4",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.1.0",
+    "serve": "^11.3.2"
+  }
+}
